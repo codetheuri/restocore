@@ -131,8 +131,14 @@ $config = [
             'enableStrictParsing' => false,
             'showScriptName' => false,
             'rules' => [
-                $_ENV['APP_VERSION'] . '/about' => 'site/about',
+                '/about' => 'site/about',
                 'admin' => '/dashboard/iam/login',
+                 'cynefin/' => 'cynefin/about-sections/index',
+                '/' => 'site/index',
+                '/about' => 'site/about',
+                '/contact' => 'site/contact',
+                '/menu'=>'site/menu',
+                '/blog'=>'site/blog',
                 [
                     'pattern' => $_ENV['APP_VERSION'] . '/docs/openapi-json-resource',
                     'route' => 'site/json-docs',
@@ -150,7 +156,7 @@ $config = [
         ],
     ],
     'params' => $wrapper->load('params'),
-      'defaultRoute'=>'/dashboard/home/index',  
+    //   'defaultRoute'=>'/dashboard/home/index',  
 ];
 if ($_SERVER['ENVIRONMENT'] == 'dev') {
     $config['bootstrap'][] = 'debug';

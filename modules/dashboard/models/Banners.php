@@ -14,7 +14,7 @@ class Banners extends \helpers\ActiveRecord
 
     public static function tableName()
     {
-        return '{{%banners}}'; // Use {{%}} for table prefix support
+        return '{{%banners}}'; 
     }
 
     public function rules()

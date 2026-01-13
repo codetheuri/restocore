@@ -1,5 +1,8 @@
 <?php
 
+/** @var yii\web\View $this */
+/** @var string $content */
+
 use yii\helpers\Html;
 use ui\bundles\MainAsset;
 
@@ -17,18 +20,14 @@ MainAsset::register($this);
     <?php $this->head() ?>
 </head>
 
+
 <body>
     <?php $this->beginBody() ?>
-    <div id="home-cover">
-        <div class="c20 center-box text-align-center">
-            <h1>Ready to begin the fun</h1>
-            <p>This is just a default welcome page to <?= Yii::$app->name ?></p>
-        </div>
-    </div>
-    <?=$content?>
-    <div class="text-align-center padding-20">Running <?= Yii::$app->name ?> <?= $_ENV['APP_VERSION'] ?></div>
+      <?= $this->render('section-cynefin/_header.php') ?>
+    <?= $content ?>
+    <?= $this->render('section-cynefin/_footer.php') ?>
+
     <?php $this->endBody() ?>
 </body>
-
 </html>
 <?php $this->endPage() ?>
