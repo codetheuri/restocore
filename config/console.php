@@ -23,7 +23,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'authManager' => [
-            'class' => \helpers\auth\AuthManager::class,
+            'class' => \helpers\iam\AuthManager::class,
             'cache' => 'cache',
         ],
         'log' => [
@@ -35,6 +35,10 @@ $config = [
             ],
         ],
         'db' => $wrapper->dbDriver('CORE_DB'),
+        'jwtConfiguration' => [
+            'class' => \helpers\iam\jwt\Configuration::class,
+            'secret' => $_ENV['JWT_SECRET'] ?? 'SomeSuperSecretKeyChangeMe',
+        ],
     ],
     'params' => $wrapper->load('params'),
 ];

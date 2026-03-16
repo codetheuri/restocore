@@ -1,11 +1,11 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Authentication & Authorization Module",
+        "title": "auth Module",
         "description": "API documentation for auth module",
         "contact": {
-            "name": "Ananda Douglas",
-            "email": "admin@crackit.co.ke"
+            "name": "Joseph Theuri",
+            "email": "thuerij113@gmail.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -15,7 +15,7 @@
     },
     "servers": [
         {
-            "url": "http://playground:8080/v1",
+            "url": "http://localhost:8085/v1",
             "description": "API Development Server"
         },
         {
@@ -58,6 +58,24 @@
                     {}
                 ]
             }
+        },
+        "/auth/index": {
+            "get": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Module Index",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -95,6 +113,10 @@
         {
             "name": "AUTH",
             "description": "Endpoints for the AUTH module"
+        },
+        {
+            "name": "AUTH",
+            "description": "Available endpoints for AUTH module"
         }
     ]
 }

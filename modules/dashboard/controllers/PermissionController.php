@@ -4,9 +4,9 @@ namespace dashboard\controllers;
 
 use Yii;
 use yii\rbac\Item;
-use auth\hooks\Configs;
-use auth\models\AuthItem;
-use auth\hooks\ItemController;
+use iam\hooks\Configs;
+use iam\models\AuthItem;
+use iam\hooks\ItemController;
 
 class PermissionController extends ItemController
 {

@@ -1,0 +1,100 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "mail Module",
+        "description": "API documentation for mail module",
+        "contact": {
+            "name": "Ananda Douglas",
+            "email": "admin@crackit.co.ke"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8085/v1",
+            "description": "API Development Server"
+        },
+        {
+            "url": "http://afya365.crackit.co.ke/v1",
+            "description": "API Staging Server"
+        },
+        {
+            "url": "https://endpoints.afya365.com/v1",
+            "description": "API Production Server"
+        }
+    ],
+    "paths": {
+        "/about": {
+            "get": {
+                "tags": [
+                    "MAIL"
+                ],
+                "summary": "Module Info. ",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/About"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {}
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "About": {
+                "properties": {
+                    "id": {
+                        "title": "Module ID",
+                        "type": "string",
+                        "example": "MAIL"
+                    },
+                    "name": {
+                        "title": "Module Name",
+                        "type": "string",
+                        "example": "MAIL Module"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "MAIL",
+            "description": "Endpoints for the MAIL module"
+        }
+    ]
+}

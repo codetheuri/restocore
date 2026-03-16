@@ -3,7 +3,7 @@
 use helpers\Html;
 use yii\rbac\Item;
 use yii\helpers\Url;
-use auth\hooks\Configs;
+use iam\hooks\Configs;
 use helpers\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -13,7 +13,7 @@ use helpers\grid\GridView;
 
 $context = $this->context;
 $labels = $context->labels();
-$newPermissions = (new \auth\models\AuthItem(null))->scanPermissions();
+$newPermissions = (new \iam\models\AuthItem(null))->scanPermissions();
 $this->title = $labels['Items'];
 
 $rules = array_keys(Configs::authManager()->getRules());

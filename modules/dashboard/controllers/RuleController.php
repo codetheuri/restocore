@@ -3,8 +3,8 @@
 namespace dashboard\controllers;
 
 use Yii;
-use auth\hooks\Helper;
-use auth\hooks\Configs;
+use iam\hooks\Helper;
+use iam\hooks\Configs;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use mdm\admin\models\BizRule;

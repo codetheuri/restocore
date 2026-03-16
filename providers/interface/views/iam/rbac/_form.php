@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\Pjax;
-use auth\hooks\Configs;
+use iam\hooks\Configs;
 use helpers\widgets\ActiveForm;
 
 /* @var $this yii\web\View */

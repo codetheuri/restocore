@@ -19,7 +19,7 @@ $this->registerCssFile(Yii::$app->urlManager->createAbsoluteUrl('/providers/swag
     <script>
         window.onload = function() {
             window.ui = SwaggerUIBundle({
-                url: "<?= Url::to([$_ENV['APP_VERSION'] . '/docs/openapi-json-resource.json', 'mod' => $mod]) ?>",
+                url: "<?= Url::to(['/' . $_ENV['APP_VERSION'] . '/docs/openapi-json-resource.json', 'mod' => $mod]) ?>",
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [

@@ -41,9 +41,9 @@ $config = [
         ],
         'request' => [
             'cookieValidationKey' => hash_hmac('sha256', md5(date('DYM')), sha1(date('myd'))),
-            // 'parsers' => [
-            //     'application/json' => 'yii\web\JsonParser',
-            // ],
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         // 'response' => [
         //     /* Enable JSON Output: */
@@ -69,14 +69,14 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'class' => \helpers\auth\AuthUser::class,
-            'identityClass' => 'auth\models\User',
+            'class' => \helpers\iam\AuthUser::class,
+            'identityClass' => 'iam\models\User',
             'enableAutoLogin' => false,
             'loginUrl' => ['dashboard/iam/login'],
             'identityCookie' => ['name' => '_identity-' . $_ENV['APP_CODE'], 'httpOnly' => true]
         ],
         'authManager' => [
-            'class' => \helpers\auth\AuthManager::class,
+            'class' => \helpers\iam\AuthManager::class,
             'cache' => 'cache',
         ],
         'errorHandler' => [
@@ -132,7 +132,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '/about' => 'site/about',
-                'admin' => '/dashboard/iam/login',
+                '/admin' => '/dashboard/permission/index',
                  'cynefin/' => 'cynefin/about-sections/index',
                 '/' => 'site/index',
                 '/about' => 'site/about',
@@ -153,6 +153,10 @@ $config = [
                     'tokens' =>  $wrapper->load('tokens'),
                 ],
             ],
+        ],
+        'jwtConfiguration' => [
+            'class' => \helpers\iam\jwt\Configuration::class,
+            'secret' => $_ENV['JWT_SECRET'] ?? 'a365-restocore-super-secret-key-that-must-be-at-least-thirty-two-characters-long',
         ],
     ],
     'params' => $wrapper->load('params'),
@@ -180,5 +184,5 @@ if ($_SERVER['ENVIRONMENT'] == 'dev') {
         ],
     ];
 }
-array_push($config,);
+
 return $config;

@@ -36,17 +36,40 @@ class ConfigWrapper
             '{key}' => '<key:[a-zA-Z0-9_\-\/]+>',
             '{crypt_id}' => '<crypt_id:[a-zA-Z0-9\\-]+>',
         ];
+        //    $this->_tokens = [
+        //     '{uid}' => '<uid:\\d[\\d,]*>',
+        //     '{id}' => '<id:[a-zA-Z0-9\\-]+>',
+        //     '{username}' => '<username:[a-zA-Z0-9\\-]+>',
+        //     '{type}' => '<type:[a-zA-Z0-9\\-]+>',
+        // ];
         $this->_params = [
             'pageSize' => [10 => 10, 25 => 25, 50 => 50, 100 => 100],
             'pageSizeLimit' => 100,
             'defaultPageSize' => 25,
-            'adminEmail' => 'mutuavictor476@gmail.com',
-            'senderEmail' => 'mutuavictor476@gmail.com',
-            'senderName' => 'Victor',
-            'supportEmail' => 'support@example.com',
-
+            'activateAuth' => true,
+            'allowedDomains' => (isset($_SERVER['APP_SAFE_DOMAINS'])) ? explode(',', $_SERVER['APP_SAFE_DOMAINS']) : ['*'],
+            'safeEndpoints' => ['login', 'docs', 'json-docs', 'register', 'categories', 'menu', 'search', 'offers', 'view'],
         ];
     }
+    // public function load($item)
+    // {
+    //     $wrapper = [];
+    //     $wrapper['aliases'] = $this->_aliases;
+    //     $wrapper['modules'] = $this->_modules;
+    //     $wrapper['params'] = $this->_params;
+    //     foreach (new DirectoryIterator(dirname(__DIR__) . '/modules') as $index => $fileinfo) {
+    //         if ($fileinfo->isDir() && !$fileinfo->isDot()) {
+    //             $wrapper['aliases']['@' . $fileinfo->getFilename()] = '@app/modules/' . $fileinfo->getFilename();
+    //             $wrapper['migrationPaths'][] = '@' . $fileinfo->getFilename() . '/migrations';
+    //             if ($fileinfo->getFilename() !== 'website') {
+    //                 $wrapper['modules'][$fileinfo->getFilename()] = [
+    //                     'class' => $fileinfo->getFilename() . '\\Module'
+    //                 ];
+    //             }
+    //         }
+    //     }
+    //     return $wrapper[$item];
+    // }
     public function load($item)
     {
         $wrapper = $routes = [];
@@ -56,15 +79,33 @@ class ConfigWrapper
         $wrapper['params'] = $this->_params;
         foreach (new DirectoryIterator(dirname(__DIR__) . '/modules') as $index => $fileinfo) {
             if ($fileinfo->isDir() && !$fileinfo->isDot()) {
-                $wrapper['aliases']['@' . $fileinfo->getFilename()] = '@app/modules/' . $fileinfo->getFilename();
-                $wrapper['controllers'][] = $fileinfo->getFilename();
-                $wrapper['migrationPaths'][] = '@' . $fileinfo->getFilename() . '/migrations';
-                if ($fileinfo->getFilename() !== 'main') {
-                    $wrapper['modules'][$fileinfo->getFilename()] = [
-                        'class' => $fileinfo->getFilename() . '\\Module'
+                $moduleName = $fileinfo->getFilename();
+                $wrapper['aliases']['@' . $moduleName] = '@app/modules/' . $moduleName;
+
+                // Dynamically discover controllers in this module if it has routers (API module)
+                $routerPath = dirname(__DIR__) . '/modules/' . $moduleName . '/routers';
+                $controllerPath = dirname(__DIR__) . '/modules/' . $moduleName . '/controllers';
+                if ($moduleName !== 'dashboard' && is_dir($routerPath) && is_dir($controllerPath)) {
+                    foreach (new DirectoryIterator($controllerPath) as $ctrFile) {
+                        if ($ctrFile->isFile() && $ctrFile->getExtension() === 'php') {
+                            $className = $ctrFile->getBasename('.php');
+                            $ctrId = strtolower(preg_replace('/Controller$/', '', $className));
+                            if ($ctrId === 'default') {
+                                $wrapper['controllers'][$moduleName] = $moduleName . '/default';
+                            } else {
+                                $wrapper['controllers'][$moduleName . '/' . $ctrId] = $moduleName . '/' . $ctrId;
+                            }
+                        }
+                    }
+                }
+
+                $wrapper['migrationPaths'][] = '@' . $moduleName . '/migrations';
+                if ($moduleName !== 'main') {
+                    $wrapper['modules'][$moduleName] = [
+                        'class' => $moduleName . '\\Module'
                     ];
-                    if ($fileinfo->getFilename() !== 'dashboard') {
-                        $dir = dirname(__DIR__) . "/modules/" . $fileinfo->getFilename() . "/routers";
+                    if ($moduleName !== 'dashboard') {
+                        $dir = dirname(__DIR__) . "/modules/" . $moduleName . "/routers";
                         foreach (glob("{$dir}/*.php") as $filename) {
                             $route = require($filename);
                             $routes = array_merge($routes, $route);
@@ -72,17 +113,29 @@ class ConfigWrapper
                         $wrapper['routes'] = $routes;
                     }
                 }
-            }
-            $module  = '\\' . $fileinfo->getFilename() . '\\Module';
-            if (property_exists($module, 'name')) {
-                $wrapper['apiMenus'][] = ['title' => Yii::$app->getModule($fileinfo->getFilename())->name, 'url' => 'api/swagger', 'param' => ['mod' => $fileinfo->getFilename()]];
+
+                // Add to API Docs menu if module has a $name property
+                $moduleClass = '\\' . $moduleName . '\\Module';
+                if (class_exists($moduleClass) && property_exists($moduleClass, 'name')) {
+                    // Try to get name without full instantiation if possible, or use a dummy instance
+                    try {
+                        $reflect = new \ReflectionClass($moduleClass);
+                        $props = $reflect->getDefaultProperties();
+                        $moduleTitle = isset($props['name']) ? $props['name'] : $moduleName;
+                    } catch (\Throwable $e) {
+                        $moduleTitle = $moduleName;
+                    }
+
+                    $wrapper['apiMenus'][] = [
+                        'title' => strtoupper($moduleTitle),
+                        'url' => 'site/docs',
+                        'param' => ['mod' => $moduleName]
+                    ];
+                }
             }
         }
         if (!empty($wrapper['apiMenus'])) {
             $wrapper['apiMenus'] = [['title' => 'API Docs', 'icon' => 'code', 'submenus' => $wrapper['apiMenus']]];
-            if ($_SERVER['ENVIRONMENT'] == 'dev') {
-                $wrapper['apiMenus'][] = ['title' => 'Gii', 'icon' => 'code-fork', 'url' => '/gii'];
-            }
         }
         return $wrapper[$item];
     }

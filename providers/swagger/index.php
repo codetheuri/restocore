@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Url;
-
+use yii;
 ?>
 <!DOCTYPE html>
 <html lang="en">

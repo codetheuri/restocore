@@ -2,7 +2,7 @@
 
 namespace dashboard\controllers;
 
-use auth\hooks\ItemController;
+use iam\hooks\ItemController;
 use yii\rbac\Item;
 
 class RoleController extends ItemController

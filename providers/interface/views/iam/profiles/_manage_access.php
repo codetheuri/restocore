@@ -53,7 +53,7 @@ $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate
                         ]);
                         ?><br><br>
                         <?=
-                        Html::a('<i class="fa fa-angles-left"></i>', ['remove', 'id' => (string) $model->id], [
+                        Html::a('<i class="fa fa-angles-left"></i>', ['revoke', 'id' => (string) $model->id], [
                             'class' => 'btn btn-danger btn-assign',
                             'data-target' => 'assigned',
                         ]);

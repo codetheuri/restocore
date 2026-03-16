@@ -33,11 +33,25 @@ $this->title = 'Dashboard';
 <div class="content">
     <div class="row items-push">
         
-        <div class="col-6 col-lg-4">
+        <div class="col-6 col-lg-3">
+            <a class="block block-rounded block-link-shadow text-center h-100 mb-0" href="<?= Url::to(['/dashboard/order/index', 'OrderSearch[status]' => 'pending']) ?>">
+                <div class="block-content block-content-full">
+                    <div class="fs-2 fw-semibold text-danger">
+                        <?= $pendingOrders ?> <span class="fs-sm fw-medium text-muted">/ <?= $totalOrders ?></span>
+                    </div>
+                    <div class="fs-sm fw-semibold text-uppercase text-muted">New Orders</div>
+                </div>
+                <div class="block-content py-2 bg-body-light">
+                    <i class="fa fa-shopping-bag fa-2x text-danger-light"></i>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-6 col-lg-3">
             <a class="block block-rounded block-link-shadow text-center h-100 mb-0" href="<?= Url::to(['/dashboard/food-menu/index']) ?>">
                 <div class="block-content block-content-full">
                     <div class="fs-2 fw-semibold text-primary">
-                        <?= $activeMenu ?> <span class="fs-sm fw-medium text-muted">/ <?= $totalMenu ?></span>
+                        <?= $activeMenu ?>
                     </div>
                     <div class="fs-sm fw-semibold text-uppercase text-muted">Active Menu Items</div>
                 </div>
@@ -47,19 +61,21 @@ $this->title = 'Dashboard';
             </a>
         </div>
 
-        <div class="col-6 col-lg-4">
-            <a class="block block-rounded block-link-shadow text-center h-100 mb-0" href="<?= Url::to(['/dashboard/blog/index']) ?>">
+        <div class="col-6 col-lg-3">
+            <a class="block block-rounded block-link-shadow text-center h-100 mb-0" href="<?= Url::to(['/dashboard/customer/index']) ?>">
                 <div class="block-content block-content-full">
-                    <div class="fs-2 fw-semibold text-smooth"> <?= $publishedBlogs ?>
+                    <div class="fs-2 fw-semibold text-smooth">
+                        <?= $totalCustomers ?>
                     </div>
-                    <div class="fs-sm fw-semibold text-uppercase text-muted">Published Posts</div>
+                    <div class="fs-sm fw-semibold text-uppercase text-muted">Total Customers</div>
                 </div>
                 <div class="block-content py-2 bg-body-light">
-                    <i class="far fa-newspaper fa-2x text-smooth-lighter"></i> </div>
+                    <i class="fa fa-users fa-2x text-smooth-lighter"></i>
+                </div>
             </a>
         </div>
 
-        <div class="col-6 col-lg-4">
+        <div class="col-6 col-lg-3">
             <a class="block block-rounded block-link-shadow text-center h-100 mb-0" href="<?= Url::to(['/dashboard/banner/index']) ?>">
                 <div class="block-content block-content-full">
                     <div class="fs-2 fw-semibold text-warning">

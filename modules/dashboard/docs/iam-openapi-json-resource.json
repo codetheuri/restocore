@@ -1,0 +1,465 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "IAM Module",
+        "description": "API documentation for IAM module",
+        "contact": {
+            "name": "Joseph Theuri",
+            "email": "theurij113@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8085/v1",
+            "description": "API Development Server"
+        },
+        {
+            "url": "http://afya365.crackit.co.ke/v1",
+            "description": "API Staging Server"
+        },
+        {
+            "url": "https://endpoints.afya365.com/v1",
+            "description": "API Production Server"
+        }
+    ],
+    "paths": {
+        "/about": {
+            "get": {
+                "tags": [
+                    "IAM"
+                ],
+                "summary": "Module Info. ",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/About"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {}
+                ]
+            }
+        },
+        "/iam/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register",
+                "description": "Register a new user account",
+                "requestBody": {
+                    "description": "Provide Username & Password",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "email_address",
+                                    "mobile_number",
+                                    "username",
+                                    "password",
+                                    "confirm_password"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "middle_name": {
+                                        "type": "string",
+                                        "example": "Michael",
+                                        "nullable": true
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "email_address": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "mobile_number": {
+                                        "type": "string",
+                                        "example": "+2541700000000"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "@dmiN1234$"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "@dmiN1234$"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Operation"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "security": [
+                    {}
+                ]
+            }
+        },
+        "/iam/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login",
+                "description": "Authenticate user and generate access token",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "@dmiN123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login Successful"
+                    }
+                },
+                "security": [
+                    {}
+                ]
+            }
+        },
+        "/iam/auth/me": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logged In User",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/iam/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Refresh Token",
+                "responses": {
+                    "200": {
+                        "description": "Token Refreshed"
+                    }
+                }
+            }
+        },
+        "/iam/auth/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "Logged Out"
+                    }
+                }
+            }
+        },
+        "/iam/profile": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Fetch current user's profile details",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "dataPayload": {
+                                            "properties": {
+                                                "data": {
+                                                    "properties": {
+                                                        "user_id": {
+                                                            "type": "string"
+                                                        },
+                                                        "username": {
+                                                            "type": "string"
+                                                        },
+                                                        "profile": {
+                                                            "properties": {
+                                                                "first_name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "last_name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "mobile_number": {
+                                                                    "type": "string"
+                                                                },
+                                                                "physical_address": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/iam/profile/update": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update current user's profile",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfileUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "dataPayload": {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "object"
+                                                },
+                                                "alertify": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "About": {
+                "properties": {
+                    "id": {
+                        "title": "Module ID",
+                        "type": "string",
+                        "example": "IAM"
+                    },
+                    "name": {
+                        "title": "Module Name",
+                        "type": "string",
+                        "example": "IAM Module"
+                    }
+                },
+                "type": "object"
+            },
+            "ProfileUpdate": {
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "middle_name": {
+                        "type": "string",
+                        "example": "Michael",
+                        "nullable": true
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "mobile_number": {
+                        "type": "string",
+                        "example": "+2541700000000"
+                    },
+                    "physical_address": {
+                        "type": "string",
+                        "example": "123 Street, City"
+                    },
+                    "password": {
+                        "description": "New password if you want to change it",
+                        "type": "string",
+                        "format": "password",
+                        "example": "newpassword123"
+                    },
+                    "confirm_password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "newpassword123"
+                    }
+                },
+                "type": "object"
+            },
+            "Register": {
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "middle_name": {
+                        "type": "string",
+                        "example": "Michael",
+                        "nullable": true
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "email_address": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john.doe@example.com"
+                    },
+                    "mobile_number": {
+                        "type": "string",
+                        "example": "+2541700000000"
+                    },
+                    "physical_address": {
+                        "type": "string",
+                        "example": "123 Street, City",
+                        "nullable": true
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "johndoe"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "@dmiN1234$"
+                    },
+                    "confirm_password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "@dmiN1234$"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "IAM",
+            "description": "Endpoints for the IAM module"
+        },
+        {
+            "name": "Authentication",
+            "description": "Available endpoints for user authentication"
+        }
+    ]
+}

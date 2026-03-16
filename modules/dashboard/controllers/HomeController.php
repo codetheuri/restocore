@@ -9,6 +9,7 @@ use mail\models\static\contactForm;
 use dashboard\models\Banners;
 use dashboard\models\Blogs;
 use dashboard\models\FoodMenus;
+use restaurant\models\Orders;
 class HomeController extends \helpers\DashboardController
 {
     /**
@@ -46,6 +47,12 @@ class HomeController extends \helpers\DashboardController
         
         $activeBanners = Banners::find()->where(['status' => 1, 'is_deleted' => 0])->count();
         
+        $pendingOrders = Orders::find()->where(['status' => 'pending', 'is_deleted' => 0])->count();
+        $totalOrders = Orders::find()->where(['is_deleted' => 0])->count();
+        
+        $totalCustomers = Yii::$app->authManager->getUserIdsByRole('customer') ;
+        $activeCustomers = count($totalCustomers);
+        
       
         return $this->render('index', [
             'totalMenu' => $totalMenu,
@@ -53,7 +60,9 @@ class HomeController extends \helpers\DashboardController
             'totalBlogs' => $totalBlogs,
             'publishedBlogs' => $publishedBlogs,
             'activeBanners' => $activeBanners,
-           
+            'pendingOrders' => $pendingOrders,
+            'totalOrders' => $totalOrders,
+            'totalCustomers' => $activeCustomers,
         ]);
     }
     public function actionDocs($mod = 'dashboard')
@@ -81,7 +90,7 @@ class HomeController extends \helpers\DashboardController
         $openapi = \OpenApi\Generator::scan(
             [
                 $roothPath . 'modules/' . $mod,
-                $roothPath . 'providers/swagger/config',
+                $roothPath . 'config',
             ]
         );
         Yii::$app->response->headers->set('Access-Control-Allow-Origin', ['*']);

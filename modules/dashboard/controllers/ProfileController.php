@@ -4,11 +4,11 @@ namespace dashboard\controllers;
 
 use Yii;
 
-use auth\models\Assignment;
-use auth\models\static\Register;
+use iam\models\Assignment;
+use iam\models\static\Register;
 use helpers\DashboardController;
 use yii\web\NotFoundHttpException;
-use auth\models\searches\UserSearch;
+use iam\models\searches\UserSearch;
 
 /**
  * ProfileController implements the CRUD actions for User model.

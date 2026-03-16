@@ -173,7 +173,7 @@ public function actionAbout()
         $openapi = \OpenApi\Generator::scan(
             [
                 $roothPath . 'modules/' . $mod,
-                $roothPath . 'providers/swagger/config',
+                $roothPath . 'config',
             ]
         );
         Yii::$app->response->headers->set('Access-Control-Allow-Origin', ['*']);

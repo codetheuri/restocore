@@ -44,7 +44,7 @@ $this->registerJs($this->render('_script.js'));
                         ]);
                         ?><br><br>
                         <?=
-                        Html::a('<i class="fa fa-angles-left"></i>', ['remove', 'id' => $model->name], [
+                        Html::a('<i class="fa fa-angles-left"></i>', ['revoke', 'id' => $model->name], [
                             'class' => 'btn btn-danger btn-assign',
                             'data-target' => 'assigned',
                         ]);

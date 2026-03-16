@@ -63,7 +63,7 @@ class SiteController extends \helpers\DashboardController
         $openapi = \OpenApi\Generator::scan(
             [
                 $roothPath . 'modules/' . $mod,
-                $roothPath . 'providers/swagger/config',
+                $roothPath . 'config',
             ]
         );
         Yii::$app->response->headers->set('Access-Control-Allow-Origin', ['*']);

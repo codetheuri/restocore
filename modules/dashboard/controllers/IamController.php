@@ -3,8 +3,8 @@
 namespace dashboard\controllers;
 
 use Yii;
-use auth\models\static\Login;
-use auth\models\static\ChangePassword;
+use iam\models\static\Login;
+use iam\models\static\ChangePassword;
 
 class IamController extends \helpers\DashboardController
 {
@@ -16,7 +16,7 @@ class IamController extends \helpers\DashboardController
             return $this->goHome();
         }
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            Yii::$app->session->setFlash('success', 'Welcome back, ' . Yii::$app->user->identity->username . '!');
+            // Yii::$app->session->setFlash('success', 'Welcome back, ' . Yii::$app->user->identity->username . '!');
             return $this->goBack();
         }
 
